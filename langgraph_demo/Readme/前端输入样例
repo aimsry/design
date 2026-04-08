@@ -1,0 +1,38 @@
+{
+  "workflow_id": "workflow_1772084333",
+  "patient_data": {
+    "basic_info": {
+      "name": "张三",
+      "gender": "male",
+      "age": 45,
+      "phone": "13800138000",
+      "id_card": "110101199001011234"
+    },
+    "symptoms": "患者主诉胸痛3小时，呈压榨性，向左臂放射，伴有大汗淋漓、恶心呕吐。疼痛持续不缓解，休息及含服硝酸甘油无效。",
+    "medical_history": "患者男性，45岁。高血压病史5年，血压控制不佳。糖尿病史3年，口服二甲双胍治疗。吸烟史20年，每日10支。父亲55岁时死于心肌梗死。",
+    "images": [
+      {
+        "type": "ECG",
+        "url": "ecg_001.jpg",
+        "description": "心电图显示ST段明显抬高，V1-V4导联异常",
+        "date": "2024-01-15"
+      }
+    ],
+    "lab_results": [
+      {
+        "test_name": "肌钙蛋白I",
+        "value": "2.5",
+        "unit": "ng/mL",
+        "reference_range": "<0.04",
+        "date": "2024-01-15"
+      },
+      {
+        "test_name": "CK-MB",
+        "value": "15",
+        "unit": "U/L",
+        "reference_range": "<5",
+        "date": "2024-01-15"
+      }
+    ]
+  }
+}

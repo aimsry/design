@@ -1,0 +1,81 @@
+{
+  "graph_id": "workflow_standard",
+  "description": "标准医疗诊断工作流（包含所有智能体）",
+  "nodes": [
+    {
+      "id": "start",
+      "type": "start",
+      "position": {"x": 100, "y": 200},
+      "data": {"label": "开始"}
+    },
+    {
+      "id": "symptom_node",
+      "type": "agent",
+      "position": {"x": 250, "y": 200},
+      "data": {
+        "label": "症状分析",
+        "agentType": "llm_agent",
+        "agentId": "symptom_analyzer",
+        "description": "分析患者症状"
+      }
+    },
+    {
+      "id": "history_node",
+      "type": "agent",
+      "position": {"x": 400, "y": 200},
+      "data": {
+        "label": "病史分析",
+        "agentType": "llm_agent",
+        "agentId": "history_analyzer",
+        "description": "分析既往病史"
+      }
+    },
+    {
+      "id": "lab_node",
+      "type": "agent",
+      "position": {"x": 550, "y": 200},
+      "data": {
+        "label": "检验分析",
+        "agentType": "llm_agent",
+        "agentId": "lab_analyzer",
+        "description": "分析检验结果"
+      }
+    },
+    {
+      "id": "imaging_node",
+      "type": "agent",
+      "position": {"x": 700, "y": 200},
+      "data": {
+        "label": "影像分析",
+        "agentType": "llm_agent",
+        "agentId": "imaging_analyzer",
+        "description": "分析医学影像"
+      }
+    },
+    {
+      "id": "diagnosis_node",
+      "type": "agent",
+      "position": {"x": 850, "y": 200},
+      "data": {
+        "label": "诊断生成",
+        "agentType": "llm_agent",
+        "agentId": "diagnosis_generator",
+        "description": "生成最终诊断"
+      }
+    },
+    {
+      "id": "end",
+      "type": "end",
+      "position": {"x": 1000, "y": 200},
+      "data": {"label": "结束"}
+    }
+  ],
+  "edges": [
+    {"source": "start", "target": "symptom_node"},
+    {"source": "symptom_node", "target": "history_node"},
+    {"source": "history_node", "target": "lab_node"},
+    {"source": "lab_node", "target": "imaging_node"},
+    {"source": "imaging_node", "target": "diagnosis_node"},
+    {"source": "diagnosis_node", "target": "end"}
+  ]
+}

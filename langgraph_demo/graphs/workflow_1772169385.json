@@ -1,0 +1,56 @@
+{
+  "graph_id": "workflow_1772169385",
+  "description": "自定义医疗诊断工作流",
+  "nodes": [
+    {
+      "id": "start-node",
+      "type": "start",
+      "position": {
+        "x": -697.2296205947829,
+        "y": 340.9989340751532
+      },
+      "data": {
+        "label": "开始"
+      }
+    },
+    {
+      "id": "end-node",
+      "type": "end",
+      "position": {
+        "x": -43.51091304057252,
+        "y": 343.486905666975
+      },
+      "data": {
+        "label": "结束"
+      }
+    },
+    {
+      "id": "history_analyzer-1772169360629",
+      "type": "agent",
+      "position": {
+        "x": -419.22114581231017,
+        "y": 325.6756327737143
+      },
+      "data": {
+        "label": "病史分析器",
+        "agentType": "llm_agent",
+        "agentId": "history_analyzer",
+        "description": "分析患者病史，识别危险因素、既往疾病等"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1772169371877",
+      "source": "start-node",
+      "target": "history_analyzer-1772169360629",
+      "type": "custom"
+    },
+    {
+      "id": "edge-1772169380213",
+      "source": "history_analyzer-1772169360629",
+      "target": "end-node",
+      "type": "custom"
+    }
+  ]
+}

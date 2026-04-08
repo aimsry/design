@@ -1,0 +1,423 @@
+# LangGraph医疗诊断后端需求文档（修订版）
+
+## 1. 项目概述
+
+### 1.1 项目目标
+开发一个基于LangGraph Platform的医疗诊断后端服务，能够：
+- 使用 `langgraph dev` 命令成功启动
+- 解析前端传入的图定义并存储在graph文件夹中
+- 动态搭建医疗诊断工作流
+- 各智能体节点调用大语言模型进行分析
+
+### 1.2 核心特性
+- **动态图构建**：支持运行时创建和修改诊断流程图
+- **LLM集成**：每个智能体节点都调用大模型进行分析
+- **状态共享**：智能体间通过共享状态传递信息
+- **LangGraph Platform兼容**：完全支持LangGraph开发工具链
+
+## 2. 技术架构要求
+
+### 2.1 核心技术栈
+- **平台框架**：LangGraph Platform
+- **大模型集成**：OpenAI API / 阿里云百炼等
+- **开发工具**：`langgraph dev` 命令行工具
+- **编程语言**：Python 3.10+
+
+### 2.2 系统架构
+```
+前端 ↔ LangGraph Platform ↔ 动态图引擎 ↔ LLM智能体集群
+     ↕                    ↕
+   图定义存储           状态共享机制
+```
+
+
+### 2.3 必须支持的命令
+```bash
+langgraph dev          # 本地开发启动
+langgraph deploy       # 部署到云端
+langgraph test         # 运行测试
+```
+
+
+## 3. 数据流和存储规范
+
+### 3.1 图定义存储结构
+```
+graphs/
+├── medical_diagnosis.json      # 医疗诊断主图
+├── symptom_analysis.json       # 症状分析子图
+├── history_analysis.json       # 病史分析子图
+└── default.json               # 默认图模板
+```
+
+
+### 3.2 图定义格式
+```json
+{
+  "graph_id": "medical_diagnosis",
+  "nodes": [
+    {
+      "id": "symptom_analyzer",
+      "type": "llm_agent",
+      "config": {
+        "system_prompt": "你是一个症状分析专家...",
+        "model": "qwen-max",
+        "temperature": 0.7
+      }
+    }
+  ],
+  "edges": [
+    {"from": "start", "to": "symptom_analyzer"},
+    {"from": "symptom_analyzer", "to": "history_analyzer"}
+  ],
+  "state_schema": {
+    "patient_data": "dict",
+    "symptom_analysis_result": "dict",
+    "history_analysis_result": "dict"
+  }
+}
+```
+
+
+## 4. 智能体设计规范
+
+### 4.1 智能体通用接口
+
+#### 输入格式（共享状态）
+```python
+State = {
+    # 基础患者信息（只读）
+    "patient_input": {
+        "basic_info": {...},
+        "symptoms": "string",
+        "medical_history": "string",
+        "images": [...],
+        "lab_results": [...]
+    },
+
+    # 各阶段分析结果（逐步填充）
+    "symptom_analysis": None,      # 症状分析结果
+    "history_analysis": None,      # 病史分析结果
+    "lab_analysis": None,          # 检验分析结果
+    "imaging_analysis": None,      # 影像分析结果
+
+    # 控制标志
+    "current_stage": "string",     # 当前处理阶段
+    "needs_specialist": bool,      # 是否需要专科会诊
+    "risk_level": "string"         # 风险等级
+}
+```
+
+
+#### 输出格式（更新状态）
+```python
+def execute(state: State) -> State:
+    """
+    每个智能体必须实现的执行方法
+    输入：当前状态
+    输出：更新后的状态
+    """
+    # 分析处理逻辑
+    analysis_result = llm_analyze(state)
+
+    # 更新共享状态
+    state["symptom_analysis"] = analysis_result
+    state["current_stage"] = "completed"
+
+    return state
+```
+
+
+### 4.2 核心智能体列表
+
+#### 4.2.1 症状分析智能体 (`symptom_analyzer`)
+```python
+class SymptomAnalyzer:
+    def __init__(self):
+        self.system_prompt = """
+        你是一个专业的症状分析医生。请分析患者的症状描述，
+        识别主要症状、严重程度、持续时间等关键信息。
+        """
+
+    def execute(self, state):
+        # 调用大模型分析症状
+        prompt = f"""
+        患者症状：{state['patient_input']['symptoms']}
+        请分析并输出结构化结果：
+        {{
+            "primary_symptoms": ["症状1", "症状2"],
+            "severity": "mild/moderate/severe",
+            "duration": "时间描述",
+            "characteristics": "症状特征"
+        }}
+        """
+
+        result = call_llm(prompt)
+        state["symptom_analysis"] = result
+        return state
+```
+
+
+#### 4.2.2 病史分析智能体 (`history_analyzer`)
+```python
+class HistoryAnalyzer:
+    def __init__(self):
+        self.system_prompt = "你是一个病史分析专家..."
+
+    def execute(self, state):
+        # 基于症状分析结果进行病史分析
+        prompt = f"""
+        患者症状分析：{state['symptom_analysis']}
+        病史信息：{state['patient_input']['medical_history']}
+        请分析危险因素、既往疾病等...
+        """
+
+        result = call_llm(prompt)
+        state["history_analysis"] = result
+        return state
+```
+
+
+#### 4.2.3 实验室分析智能体 (`lab_analyzer`)
+```python
+class LabAnalyzer:
+    def execute(self, state):
+        prompt = f"""
+        检验结果：{state['patient_input']['lab_results']}
+        结合症状：{state['symptom_analysis']}
+        请分析检验异常及其临床意义...
+        """
+
+        result = call_llm(prompt)
+        state["lab_analysis"] = result
+        return state
+```
+
+
+#### 4.2.4 影像分析智能体 (`imaging_analyzer`)
+```python
+class ImagingAnalyzer:
+    def execute(self, state):
+        prompt = f"""
+        影像描述：{state['patient_input']['images']}
+        请分析影像发现的异常及其临床意义...
+        """
+
+        result = call_llm(prompt)
+        state["imaging_analysis"] = result
+        return state
+```
+
+
+#### 4.2.5 综合诊断智能体 (`diagnosis_generator`)
+```python
+class DiagnosisGenerator:
+    def execute(self, state):
+        # 整合所有分析结果
+        prompt = f"""
+        综合所有分析结果：
+        症状：{state['symptom_analysis']}
+        病史：{state['history_analysis']}
+        检验：{state['lab_analysis']}
+        影像：{state['imaging_analysis']}
+
+        请生成最终诊断、鉴别诊断和治疗建议...
+        """
+
+        result = call_llm(prompt)
+        state["final_diagnosis"] = result
+        state["diagnosis_complete"] = True
+        return state
+```
+
+
+## 5. 状态共享机制
+
+### 5.1 共享状态管理
+```python
+class SharedStateManager:
+    def __init__(self):
+        self.state = {}
+        self.lock = threading.Lock()
+
+    def update_state(self, node_id, data):
+        """线程安全的状态更新"""
+        with self.lock:
+            self.state[node_id] = data
+            self.state["last_updated"] = datetime.now()
+
+    def get_state(self, node_id=None):
+        """获取指定节点或全部状态"""
+        with self.lock:
+            if node_id:
+                return self.state.get(node_id, {})
+            return self.state.copy()
+```
+
+
+### 5.2 状态传递策略
+1. **增量更新**：每个节点只更新自己的分析结果
+2. **只读保护**：基础患者信息设为只读
+3. **版本控制**：状态变更历史追踪
+4. **冲突解决**：并发更新的处理机制
+
+## 6. LangGraph Platform集成
+
+### 6.1 项目结构要求
+```
+medical_diagnosis_project/
+├── src/
+│   └── agent/
+│       ├── __init__.py
+│       ├── graph_builder.py          # 图构建器
+│       ├── state_manager.py          # 状态管理器
+│       └── nodes/                    # 智能体节点
+│           ├── symptom_analyzer.py
+│           ├── history_analyzer.py
+│           └── ...
+├── graphs/                           # 图定义存储
+│   ├── medical_diagnosis.json
+│   └── ...
+├── langgraph.json                   # LangGraph配置
+├── requirements.txt
+└── README.md
+```
+
+
+### 6.2 langgraph.json 配置
+```json
+{
+  "$schema": "https://langgra.ph/schema.json",
+  "dependencies": ["."],
+  "graphs": {
+    "medical_diagnosis": "./src/agent/graph_builder.py:build_medical_graph"
+  },
+  "env": ".env"
+}
+```
+
+
+### 6.3 开发环境启动
+```bash
+# 1. 安装依赖
+pip install langgraph-cli[dev]
+
+# 2. 启动开发服务器
+langgraph dev
+
+# 3. 访问Studio界面
+# http://localhost:2024
+```
+
+
+## 7. API接口设计
+
+### 7.1 图管理API
+```
+POST /graphs/                  # 创建新图
+GET /graphs/{graph_id}         # 获取图定义
+PUT /graphs/{graph_id}         # 更新图定义
+DELETE /graphs/{graph_id}      # 删除图
+```
+
+
+### 7.2 诊断执行API
+```
+POST /diagnose                 # 执行诊断
+GET /diagnose/{session_id}     # 获取诊断结果
+POST /diagnose/stream          # 流式诊断
+```
+
+
+## 8. 配置和环境
+
+### 8.1 环境变量 (.env)
+```env
+OPENAI_API_KEY=sk-...
+MODEL_NAME=qwen-max
+TEMPERATURE=0.7
+MAX_TOKENS=2000
+LANGGRAPH_DEBUG=true
+```
+
+
+### 8.2 配置管理
+```python
+# config/settings.py
+class Settings:
+    MODEL_NAME: str = "qwen-max"
+    TEMPERATURE: float = 0.7
+    MAX_TOKENS: int = 2000
+    DEBUG: bool = False
+```
+
+
+## 9. 测试要求
+
+### 9.1 单元测试
+```python
+def test_symptom_analyzer():
+    """测试症状分析智能体"""
+    state = create_test_state()
+    analyzer = SymptomAnalyzer()
+    result_state = analyzer.execute(state)
+    assert "symptom_analysis" in result_state
+
+def test_graph_compilation():
+    """测试图编译"""
+    graph_def = load_graph_definition("medical_diagnosis")
+    compiled_graph = compile_graph(graph_def)
+    assert compiled_graph is not None
+```
+
+
+### 9.2 集成测试
+```python
+def test_full_diagnosis_workflow():
+    """测试完整诊断流程"""
+    # 模拟前端请求
+    patient_data = create_patient_input()
+
+    # 执行诊断
+    result = execute_diagnosis(patient_data)
+
+    # 验证结果
+    assert "final_diagnosis" in result
+    assert result["diagnosis_complete"] == True
+```
+
+
+## 10. 部署和运维
+
+### 10.1 本地开发
+```bash
+# 启动开发环境
+langgraph dev
+
+# 运行测试
+langgraph test
+
+# 查看日志
+langgraph logs
+```
+
+
+### 10.2 云端部署
+```bash
+# 部署到LangGraph Cloud
+langgraph deploy
+
+# 查看部署状态
+langgraph status
+```
+
+
+### 10.3 监控指标
+- 图执行成功率
+- 平均响应时间
+- LLM调用次数和费用
+- 状态更新频率
+
+---
+
+这份修订版需求文档重点关注了LangGraph Platform的集成、动态图构建、LLM调用以及状态共享机制，确保项目能够通过`langgraph dev`命令成功启动并运行。

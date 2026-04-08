@@ -1,0 +1,76 @@
+{
+  "graph_id": "workflow_1772265111",
+  "description": "自定义医疗诊断工作流",
+  "nodes": [
+    {
+      "id": "start-node",
+      "type": "start",
+      "position": {
+        "x": 0.0,
+        "y": 100.0
+      },
+      "data": {
+        "label": "开始"
+      }
+    },
+    {
+      "id": "end-node",
+      "type": "end",
+      "position": {
+        "x": 662.6762589928057,
+        "y": 111.39568345323741
+      },
+      "data": {
+        "label": "结束"
+      }
+    },
+    {
+      "id": "history_analyzer-1772265097178",
+      "type": "agent",
+      "position": {
+        "x": 439.78747824138884,
+        "y": 104.94578943361066
+      },
+      "data": {
+        "label": "病史分析器",
+        "agentType": "llm_agent",
+        "agentId": "history_analyzer",
+        "description": "分析患者病史，识别危险因素、既往疾病等"
+      }
+    },
+    {
+      "id": "lab_analyzer-1772265097754",
+      "type": "agent",
+      "position": {
+        "x": 160.72514265456277,
+        "y": 64.39379705754374
+      },
+      "data": {
+        "label": "检验分析器",
+        "agentType": "llm_agent",
+        "agentId": "lab_analyzer",
+        "description": "分析检验结果，识别异常指标和临床意义"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1772265106002",
+      "source": "start-node",
+      "target": "lab_analyzer-1772265097754",
+      "type": "custom"
+    },
+    {
+      "id": "edge-1772265108132",
+      "source": "lab_analyzer-1772265097754",
+      "target": "history_analyzer-1772265097178",
+      "type": "custom"
+    },
+    {
+      "id": "edge-1772265109804",
+      "source": "history_analyzer-1772265097178",
+      "target": "end-node",
+      "type": "custom"
+    }
+  ]
+}

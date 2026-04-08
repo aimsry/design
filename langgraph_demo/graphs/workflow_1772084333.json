@@ -1,0 +1,102 @@
+{
+  "graph_id": "workflow_1772084333",
+  "description": "自定义医疗诊断工作流",
+  "nodes": [
+    {
+      "id": "start-node",
+      "type": "start",
+      "position": {
+        "x": 0.0,
+        "y": 92.28404105049765
+      },
+      "data": {
+        "label": "开始"
+      }
+    },
+    {
+      "id": "end-node",
+      "type": "end",
+      "position": {
+        "x": 694.9640287769782,
+        "y": 107.59712230215823
+      },
+      "data": {
+        "label": "结束"
+      }
+    },
+    {
+      "id": "symptom_analyzer-1772084283150",
+      "type": "agent",
+      "position": {
+        "x": 221.64819157640318,
+        "y": 221.75202344806382
+      },
+      "data": {
+        "label": "症状分析器",
+        "agentType": "llm_agent",
+        "agentId": "symptom_analyzer",
+        "description": "分析患者症状，识别主要症状、严重程度、持续时间等"
+      }
+    },
+    {
+      "id": "history_analyzer-1772084299222",
+      "type": "agent",
+      "position": {
+        "x": 214.12996122970424,
+        "y": -8.642044005884273
+      },
+      "data": {
+        "label": "病史分析器",
+        "agentType": "llm_agent",
+        "agentId": "history_analyzer",
+        "description": "分析患者病史，识别危险因素、既往疾病等"
+      }
+    },
+    {
+      "id": "lab_analyzer-1772084313374",
+      "type": "agent",
+      "position": {
+        "x": 456.769304864363,
+        "y": 92.35923778567206
+      },
+      "data": {
+        "label": "检验分析器",
+        "agentType": "llm_agent",
+        "agentId": "lab_analyzer",
+        "description": "分析检验结果，识别异常指标和临床意义"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1772084294751",
+      "source": "start-node",
+      "target": "symptom_analyzer-1772084283150",
+      "type": "custom"
+    },
+    {
+      "id": "edge-1772084304560",
+      "source": "start-node",
+      "target": "history_analyzer-1772084299222",
+      "type": "custom"
+    },
+    {
+      "id": "edge-1772084319686",
+      "source": "history_analyzer-1772084299222",
+      "target": "lab_analyzer-1772084313374",
+      "type": "custom"
+    },
+    {
+      "id": "edge-1772084323159",
+      "source": "symptom_analyzer-1772084283150",
+      "target": "lab_analyzer-1772084313374",
+      "type": "custom"
+    },
+    {
+      "id": "edge-1772084326343",
+      "source": "lab_analyzer-1772084313374",
+      "target": "end-node",
+      "type": "custom"
+    }
+  ]
+}

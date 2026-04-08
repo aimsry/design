@@ -1,0 +1,99 @@
+{
+  "report_metadata": {
+    "report_id": "MED20240115001",
+    "generated_time": "2024-01-15T11:30:00Z",
+    "patient_name": "张三",
+    "patient_age": 45,
+    "patient_gender": "male"
+  },
+  "patient_summary": {
+    "chief_complaint": "胸痛3小时，呈压榨性，向左臂放射",
+    "current_status": "急诊观察中"
+  },
+  "clinical_analyses": {
+    "symptom_analysis": {
+      "primary_symptoms": [
+        "胸痛",
+        "放射痛",
+        "出汗"
+      ],
+      "severity": "severe",
+      "duration": "3小时",
+      "characteristics": "压榨性，持续性"
+    },
+    "history_analysis": {
+      "risk_factors": [
+        "hypertension",
+        "smoking",
+        "family_history"
+      ],
+      "chronic_conditions": [
+        "hypertension"
+      ],
+      "medications": [
+        "antihypertensive"
+      ]
+    },
+    "lab_analysis": {
+      "critical_values": [
+        {
+          "test": "肌钙蛋白I",
+          "value": "2.5",
+          "unit": "ng/mL",
+          "significance": "显著升高"
+        }
+      ],
+      "organ_function": {
+        "心脏": "心肌损伤标志物异常"
+      }
+    },
+    "imaging_analysis": {
+      "key_findings": [
+        "ST段抬高"
+      ],
+      "abnormalities": [
+        "V1-V4导联ST段抬高"
+      ],
+      "clinical_significance": "提示急性心肌缺血"
+    }
+  },
+  "diagnosis": {
+    "primary_diagnosis": "急性心肌梗死可能性大",
+    "differential_diagnosis": [
+      "不稳定型心绞痛",
+      "主动脉夹层",
+      "肺栓塞"
+    ],
+    "risk_assessment": "high",
+    "urgency": "immediate"
+  },
+  "recommendations": {
+    "immediate_actions": [
+      "立即急诊科就诊",
+      "心电监护",
+      "建立静脉通路",
+      "嚼服阿司匹林300mg"
+    ],
+    "further_investigations": [
+      "急诊冠状动脉造影",
+      "心脏彩超",
+      "连续心肌酶监测"
+    ],
+    "follow_up": {
+      "immediate_care": "住院治疗至少24小时",
+      "specialist_referral": "心内科主任医师会诊",
+      "timeline": "出院后1周复查"
+    }
+  },
+  "confidence_metrics": {
+    "overall_confidence": 0.85,
+    "based_on_evidence": [
+      "典型症状",
+      "心电图改变",
+      "心肌酶升高"
+    ],
+    "limitations": [
+      "需要进一步影像学确认"
+    ]
+  }
+}

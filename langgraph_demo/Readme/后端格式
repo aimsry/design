@@ -1,0 +1,103 @@
+{
+  "diagnosis_report": {
+    "report_id": "REP20240115001",
+    "generated_time": "2024-01-15T14:30:25Z",
+
+    "patient_summary": {
+      "name": "张三",
+      "age_gender": "45岁男性",
+      "chief_complaint": "胸痛2小时"
+    },
+
+    "clinical_assessment": {
+      "primary_diagnosis": "急性心肌梗死可能性大",
+      "differential_diagnosis": [
+        "不稳定型心绞痛",
+        "主动脉夹层",
+        "肺栓塞"
+      ],
+      "risk_level": "高危",
+      "urgency": "紧急"
+    },
+
+    "detailed_analysis": {
+      "symptom_analysis": {
+        "key_symptoms": ["胸痛", "放射痛", "出汗"],
+        "pain_characteristics": "压榨性，持续性",
+        "aggravating_factors": ["活动"],
+        "relieving_factors": ["休息无缓解"]
+      },
+
+      "medical_history_impact": {
+        "risk_factors": ["高血压", "糖尿病", "吸烟史", "家族史"],
+        "prognostic_indicators": ["多重危险因素"]
+      }
+    },
+
+    "treatment_recommendations": {
+      "immediate_actions": [
+        "立即急诊科就诊",
+        "心电监护",
+        "建立静脉通路",
+        "嚼服阿司匹林300mg"
+      ],
+
+      "medications": [
+        {
+          "drug_name": "阿司匹林",
+          "dosage": "300mg",
+          "route": "口服",
+          "frequency": "立即",
+          "purpose": "抗血小板聚集"
+        },
+        {
+          "drug_name": "硝酸甘油",
+          "dosage": "0.5mg",
+          "route": "舌下含服",
+          "frequency": "每5分钟一次，最多3次",
+          "purpose": "扩张冠状动脉"
+        }
+      ],
+
+      "further_investigations": [
+        "急诊心电图",
+        "心肌酶谱检测",
+        "心脏彩超",
+        "冠状动脉造影（如条件允许）"
+      ]
+    },
+
+    "follow_up_plan": {
+      "immediate_care": "住院观察至少24小时",
+      "specialist_referral": "心内科主任医师会诊",
+      "timeline": {
+        "next_24_hours": "密切监护，重复心电图",
+        "next_3_days": "完善相关检查",
+        "next_week": "制定长期治疗方案"
+      }
+    },
+
+    "patient_education": {
+      "disease_explanation": "急性心肌梗死是由于冠状动脉急性闭塞导致的心肌缺血坏死...",
+      "lifestyle_modifications": [
+        "严格戒烟",
+        "低盐低脂饮食",
+        "规律作息",
+        "适度运动"
+      ],
+      "warning_signs": [
+        "胸痛复发",
+        "呼吸困难",
+        "大汗淋漓",
+        "晕厥"
+      ]
+    },
+
+    "confidence_score": 0.85,
+    "recommendation_basis": [
+      "典型胸痛症状",
+      "多重心血管危险因素",
+      "心电图ST段改变的可能性"
+    ]
+  }
+}

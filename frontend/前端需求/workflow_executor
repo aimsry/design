@@ -1,0 +1,14 @@
+工作流节点类型 (agentType)
+表单中显示的字段
+数据类型
+所有工作流
+✅ 基本信息（姓名、性别、年龄等）<br>✅ 症状与病史
+必填
+imaging_analyzer (影像分析器)
+➕ 影像学检查：<br>- 检查类型（文本）<br>- 检查描述（文本）<br>- 检查日期（日期）<br>- 📷 图片上传（文件）
+条件必填
+lab_analyzer (检验分析器)
+➕ 实验室检验：<br>- 检验项目名称<br>- 结果值<br>- 单位<br>- 参考范围<br>- 日期
+条件必填
+其他节点（如 symptom_analyzer, history_analyzer, diagnosis_generator）
+❌ 不需要额外表单字段
