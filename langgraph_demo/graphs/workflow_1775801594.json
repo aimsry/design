@@ -1,0 +1,88 @@
+{
+  "graph_id": "workflow_1775801594",
+  "description": "",
+  "nodes": [
+    {
+      "id": "agent_1775800823994",
+      "type": "agent",
+      "position": {
+        "x": 1086.131169508506,
+        "y": 87.91261179590157
+      },
+      "data": {
+        "label": "症状分析器",
+        "agentType": "llm_agent",
+        "agentId": "symptom_analyzer",
+        "description": "分析患者症状，识别主要症状、严重程度、持续时间等"
+      }
+    },
+    {
+      "id": "agent_1775800831206",
+      "type": "agent",
+      "position": {
+        "x": 646.7054730638472,
+        "y": 80.3144272012707
+      },
+      "data": {
+        "label": "检验分析器",
+        "agentType": "llm_agent",
+        "agentId": "lab_analyzer",
+        "description": "分析检验结果，识别异常指标和临床意义"
+      }
+    },
+    {
+      "id": "agent_1775800833174",
+      "type": "agent",
+      "position": {
+        "x": 235.0028813571223,
+        "y": 199.6447221653009
+      },
+      "data": {
+        "label": "症状分析器",
+        "agentType": "llm_agent",
+        "agentId": "symptom_analyzer",
+        "description": "分析患者症状，识别主要症状、严重程度、持续时间等"
+      }
+    },
+    {
+      "id": "agent_1775800834613",
+      "type": "agent",
+      "position": {
+        "x": 600.5679384116536,
+        "y": 285.799039298614
+      },
+      "data": {
+        "label": "影像分析器",
+        "agentType": "llm_agent",
+        "agentId": "imaging_analyzer",
+        "description": "分析影像描述，识别主要发现和异常"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "reactflow__edge-agent_1775800831206-agent_1775800823994",
+      "source": "agent_1775800831206",
+      "target": "agent_1775800823994",
+      "type": "custom"
+    },
+    {
+      "id": "reactflow__edge-agent_1775800823994-agent_1775800834613",
+      "source": "agent_1775800823994",
+      "target": "agent_1775800834613",
+      "type": "custom"
+    },
+    {
+      "id": "reactflow__edge-agent_1775800834613-agent_1775800833174",
+      "source": "agent_1775800834613",
+      "target": "agent_1775800833174",
+      "type": "custom"
+    },
+    {
+      "id": "reactflow__edge-agent_1775800833174-agent_1775800831206",
+      "source": "agent_1775800833174",
+      "target": "agent_1775800831206",
+      "type": "custom"
+    }
+  ]
+}

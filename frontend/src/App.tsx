@@ -54,7 +54,7 @@ function App() {
           <Menu.Item key="workflow" icon={<PartitionOutlined />}>
             工作流编排
           </Menu.Item>
-          <Menu.Item key="workflow-executor" icon={<PlayCircleOutlined />}>  // 新增菜单项
+          <Menu.Item key="workflow-executor" icon={<PlayCircleOutlined />}>
             工作流执行
           </Menu.Item>
           <Menu.Item key="patients" icon={<UserOutlined />}>
@@ -75,7 +75,7 @@ function App() {
           <Title level={3} style={{ lineHeight: '64px', margin: 0 }}>
             {currentView === 'dashboard' && '欢迎使用医疗诊断系统'}
             {currentView === 'workflow' && '工作流编排'}
-            {currentView === 'workflow-executor' && '工作流执行'}  // 新增标题
+            {currentView === 'workflow-executor' && '工作流执行'}
             {currentView === 'patients' && '患者管理'}
             {currentView === 'records' && '诊断记录'}
             {currentView === 'settings' && '系统设置'}

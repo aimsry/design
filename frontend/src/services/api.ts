@@ -9,7 +9,11 @@ export const workflowApi = {
   getAvailableAgents: async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/workflow/agents`);
-      return await response.json();
+      const data = await response.json();
+      return {
+        success: true,
+        data: data.agents || []
+      };
     } catch (error) {
       console.error('获取智能体列表失败:', error);
       throw error;
@@ -19,7 +23,7 @@ export const workflowApi = {
   // 保存工作流
   saveWorkflow: async (workflow: any) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/workflow`, {
+      const response = await fetch(`${API_BASE_URL}/workflows`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

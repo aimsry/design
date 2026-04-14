@@ -1,0 +1,128 @@
+{
+  "graph_id": "workflow_1775618009",
+  "description": "",
+  "nodes": [
+    {
+      "id": "agent_1775614967155",
+      "type": "agent",
+      "position": {
+        "x": 27.955462404448554,
+        "y": 181.97944608784093
+      },
+      "data": {
+        "label": "症状分析器",
+        "agentType": "llm_agent",
+        "agentId": "symptom_analyzer",
+        "description": "分析患者症状，识别主要症状、严重程度、持续时间等"
+      }
+    },
+    {
+      "id": "agent_1775614972760",
+      "type": "agent",
+      "position": {
+        "x": 322.57193418980944,
+        "y": 190.34060143855433
+      },
+      "data": {
+        "label": "病史分析器",
+        "agentType": "llm_agent",
+        "agentId": "history_analyzer",
+        "description": "分析患者病史，识别危险因素、既往疾病等"
+      }
+    },
+    {
+      "id": "agent_1775614986193",
+      "type": "agent",
+      "position": {
+        "x": 756.5187836973098,
+        "y": 85.52862406086882
+      },
+      "data": {
+        "label": "检验分析器",
+        "agentType": "llm_agent",
+        "agentId": "lab_analyzer",
+        "description": "分析检验结果，识别异常指标和临床意义"
+      }
+    },
+    {
+      "id": "agent_1775614988452",
+      "type": "agent",
+      "position": {
+        "x": 728.1565268084944,
+        "y": 267.81247063548926
+      },
+      "data": {
+        "label": "影像分析器",
+        "agentType": "llm_agent",
+        "agentId": "imaging_analyzer",
+        "description": "分析影像描述，识别主要发现和异常"
+      }
+    },
+    {
+      "id": "agent_1775615009481",
+      "type": "agent",
+      "position": {
+        "x": 1314.154530947531,
+        "y": 185.9557040740865
+      },
+      "data": {
+        "label": "报告生成器",
+        "agentType": "template_agent",
+        "agentId": "report_generator",
+        "description": "生成结构化诊断报告"
+      }
+    },
+    {
+      "id": "agent_1775615013970",
+      "type": "agent",
+      "position": {
+        "x": 996.462955874186,
+        "y": 190.16967745016018
+      },
+      "data": {
+        "label": "诊断生成器",
+        "agentType": "llm_agent",
+        "agentId": "diagnosis_generator",
+        "description": "生成最终诊断，包括主要诊断、鉴别诊断和治疗建议"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "reactflow__edge-agent_1775614967155-agent_1775614972760",
+      "source": "agent_1775614967155",
+      "target": "agent_1775614972760",
+      "type": "custom"
+    },
+    {
+      "id": "reactflow__edge-agent_1775614972760-agent_1775614986193",
+      "source": "agent_1775614972760",
+      "target": "agent_1775614986193",
+      "type": "custom"
+    },
+    {
+      "id": "reactflow__edge-agent_1775614972760-agent_1775614988452",
+      "source": "agent_1775614972760",
+      "target": "agent_1775614988452",
+      "type": "custom"
+    },
+    {
+      "id": "reactflow__edge-agent_1775614986193-agent_1775615013970",
+      "source": "agent_1775614986193",
+      "target": "agent_1775615013970",
+      "type": "custom"
+    },
+    {
+      "id": "reactflow__edge-agent_1775614988452-agent_1775615013970",
+      "source": "agent_1775614988452",
+      "target": "agent_1775615013970",
+      "type": "custom"
+    },
+    {
+      "id": "reactflow__edge-agent_1775615013970-agent_1775615009481",
+      "source": "agent_1775615013970",
+      "target": "agent_1775615009481",
+      "type": "custom"
+    }
+  ]
+}

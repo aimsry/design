@@ -309,7 +309,7 @@ async def get_workflow(workflow_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/agents", response_model=AvailableAgentsResponse)
+@router.get("/workflow/agents", response_model=AvailableAgentsResponse)
 async def list_available_agents():
     """获取可用的智能体列表"""
     try:
